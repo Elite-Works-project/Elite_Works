@@ -1,37 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@drawable/background"
     tools:context=".LoginActivity">
 
     <ImageView
         android:id="@+id/logoImageViewLogin"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="200dp"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
         android:src="@drawable/elite_works_logo"
         android:adjustViewBounds="true"
         android:layout_marginTop="30dp"
-        app:layout_constraintDimensionRatio="H, 20:7"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        />
 
     <TextView
         android:id="@+id/login_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Login"
+        android:layout_gravity="center"
         android:textColor="@color/text_view"
         android:textSize="32sp"
         android:layout_marginTop="20sp"
         app:fontFamily="@font/poppins_bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/logoImageViewLogin" />
+       />
 
     <LinearLayout
         android:id="@+id/ll_email_login"
@@ -42,10 +39,7 @@
         android:layout_marginTop="24dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:background="@drawable/edit_text_background"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_title">
+        android:background="@drawable/edit_text_background">
 
         <androidx.cardview.widget.CardView
             android:layout_width="55dp"
@@ -88,10 +82,7 @@
         android:layout_marginTop="24dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:background="@drawable/edit_text_background"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ll_email_login">
+        android:background="@drawable/edit_text_background">
 
         <androidx.cardview.widget.CardView
             android:layout_width="55dp"
@@ -126,7 +117,17 @@
 
         </EditText>
     </LinearLayout>
-
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        app:backgroundTint="@color/blue"
+        app:cornerRadius="10dp"
+        android:layout_marginTop="25dp"
+        android:textAllCaps="false"
+        android:textColor="@color/text_view"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Sign Up"/>
+</LinearLayout>
 <!--    add buttons-->
-
-</androidx.constraintlayout.widget.ConstraintLayout>
