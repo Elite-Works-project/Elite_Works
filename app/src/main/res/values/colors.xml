@@ -14,6 +14,10 @@
 
 
     <color name="edit_text_bg">#F7F7F7</color>
-    <color name="edit_text_ip">#C0BDBD</color>
+    <color name="edit_text_hint">#C0BDBD</color>
+    <color name="edit_text_ip">#3C3A3A</color>
+
+    <color name="text_view">#323232</color>
+
 
 </resources>
