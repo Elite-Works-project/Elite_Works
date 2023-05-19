@@ -10,12 +10,14 @@
 
     <ImageView
         android:id="@+id/logoImageViewSignUp"
-        android:layout_width="180dp"
+        android:layout_width="match_parent"
         android:layout_gravity="center"
         android:layout_height="wrap_content"
         android:src="@drawable/elite_works_logo"
         android:adjustViewBounds="true"
         android:layout_marginTop="30dp"
+        android:layout_marginLeft="120dp"
+        android:layout_marginRight="120dp"
         />
 
     <TextView
@@ -116,6 +118,7 @@
             android:textColor="@color/edit_text_ip"
             android:textColorHint="@color/edit_text_hint">
         </EditText>
+
     </LinearLayout>
 
     <LinearLayout
@@ -174,6 +177,4 @@
        android:textColor="@color/text_view"
        android:fontFamily="@font/poppins_bold"
        android:text="Sign Up"/>
-
-    <!--    add buttons-->
 </LinearLayout>

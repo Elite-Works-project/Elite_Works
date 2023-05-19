@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "129674455837",
+    "project_id": "elite-works-19dd1",
+    "storage_bucket": "elite-works-19dd1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:129674455837:android:a926f4221345680794cff4",
+        "android_client_info": {
+          "package_name": "com.example.eliteworks"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "129674455837-2eoba2pgkio5h25dvp3o0afamuimbte6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.eliteworks",
+            "certificate_hash": "6804680dde996a19784777c1a1fb5573211feb69"
+          }
+        },
+        {
+          "client_id": "129674455837-fnqo3k6ae0ptnbji85bf6pt4j4q56p5c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCoXdobbWUOfWPw-Y31BH4eInV5ZTyKd4A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "129674455837-fnqo3k6ae0ptnbji85bf6pt4j4q56p5c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
