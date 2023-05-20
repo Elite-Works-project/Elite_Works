@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Patterns
+import android.widget.Toast
 import com.example.eliteworks.databinding.ActivityLoginBinding
 
 class LoginActivity : BaseActivity() {
@@ -58,5 +59,9 @@ class LoginActivity : BaseActivity() {
                 true
             }
         }
+    }
+
+    override fun onBackPressed() {
+        doubleBackToExit()
     }
 }
