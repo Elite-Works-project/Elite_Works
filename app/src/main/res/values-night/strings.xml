@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="err_msg_invalid_email">Please enter a valid email address.</string>
+    <string name="err_msg_password_length">Password must be at least 6 characters long.</string>
+</resources>

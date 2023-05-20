@@ -1,211 +1,215 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    android:orientation="vertical"
     tools:context=".LoginActivity">
 
-    <ImageView
-        android:id="@+id/logoImageViewLogin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="120dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginRight="120dp"
-        android:adjustViewBounds="true"
-        android:src="@drawable/elite_works_logo" />
-
-    <TextView
-        android:id="@+id/login_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="20sp"
-        android:text="Login"
-        android:textColor="@color/text_view"
-        android:textSize="32sp"
-        app:fontFamily="@font/poppins_bold" />
-
     <LinearLayout
-        android:id="@+id/ll_email_from_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="25dp"
-        android:background="@drawable/edit_text_background"
-        android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="55dp"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="-10dp"
-            android:gravity="center"
-            android:paddingTop="8dp"
-            app:cardBackgroundColor="@color/blue"
-            app:cardCornerRadius="10dp">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:adjustViewBounds="true"
-                android:padding="12dp"
-                android:src="@drawable/email" />
-        </androidx.cardview.widget.CardView>
-
-        <EditText
-            android:id="@+id/et_email_from_login"
+        <ImageView
+            android:id="@+id/logoImageViewLogin"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/edit_text_background"
-            android:hint="Email Id"
-            android:paddingStart="20dp"
-            android:textColor="@color/edit_text_ip"
-            android:textColorHint="@color/edit_text_hint"
-            android:textSize="15sp"
-            app:fontFamily="@font/poppins">
-
-        </EditText>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_password_from_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="25dp"
-        android:background="@drawable/edit_text_background"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="55dp"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="-10dp"
-            android:gravity="center"
-            android:paddingTop="8dp"
-            app:cardBackgroundColor="@color/blue"
-            app:cardCornerRadius="10dp">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:adjustViewBounds="true"
-                android:padding="15dp"
-                android:src="@drawable/password_lock" />
-        </androidx.cardview.widget.CardView>
-
-        <EditText
-            android:id="@+id/et_password_from_login"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/edit_text_background"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:paddingStart="20dp"
-            android:textColor="@color/edit_text_ip"
-            android:textColorHint="@color/edit_text_hint"
-            android:textSize="15sp"
-            app:fontFamily="@font/poppins">
-        </EditText>
-    </LinearLayout>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_login_from_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="25dp"
-        android:fontFamily="@font/poppins_bold"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:text="Log In"
-        android:textAllCaps="false"
-        android:textColor="@color/text_view"
-        android:textSize="15sp"
-        app:backgroundTint="@color/blue"
-        app:cornerRadius="10dp"
-        app:elevation="10dp"
-        app:icon="@drawable/ic_baseline_arrow_forward_24"
-        app:iconGravity="textEnd"
-        app:iconTint="@color/text_view" />
-
-    <Button
-        android:id="@+id/btn_forgot_password_from_login"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="12dp"
-        android:fontFamily="@font/poppins"
-        android:text="Forgot Password?"
-        android:textColor="@color/text_view"
-        android:textStyle="bold" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="5dp"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="15dp"
-            android:layout_weight="1"
-            android:background="@color/text_view" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="120dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="120dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/elite_works_logo" />
 
         <TextView
+            android:id="@+id/login_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="OR"
+            android:layout_marginTop="20sp"
+            android:text="Login"
             android:textColor="@color/text_view"
-            android:textSize="12sp"
+            android:textSize="32sp"
             app:fontFamily="@font/poppins_bold" />
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="50dp"
-            android:layout_weight="1"
-            android:background="@color/text_view" />
+        <LinearLayout
+            android:id="@+id/ll_email_from_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="25dp"
+            android:background="@drawable/edit_text_background"
+            android:gravity="center"
+            android:orientation="horizontal">
 
+            <androidx.cardview.widget.CardView
+                android:layout_width="55dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="-10dp"
+                android:gravity="center"
+                android:paddingTop="8dp"
+                app:cardBackgroundColor="@color/blue"
+                app:cardCornerRadius="10dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:padding="12dp"
+                    android:src="@drawable/email" />
+            </androidx.cardview.widget.CardView>
+
+            <EditText
+                android:id="@+id/et_email_from_login"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/edit_text_background"
+                android:hint="Email Id"
+                android:paddingStart="20dp"
+                android:textColor="@color/edit_text_ip"
+                android:textColorHint="@color/edit_text_hint"
+                android:textSize="15sp"
+                app:fontFamily="@font/poppins">
+
+            </EditText>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_password_from_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="25dp"
+            android:background="@drawable/edit_text_background"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="55dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="-10dp"
+                android:gravity="center"
+                android:paddingTop="8dp"
+                app:cardBackgroundColor="@color/blue"
+                app:cardCornerRadius="10dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:padding="15dp"
+                    android:src="@drawable/password_lock" />
+            </androidx.cardview.widget.CardView>
+
+            <EditText
+                android:id="@+id/et_password_from_login"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/edit_text_background"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:paddingStart="20dp"
+                android:textColor="@color/edit_text_ip"
+                android:textColorHint="@color/edit_text_hint"
+                android:textSize="15sp"
+                app:fontFamily="@font/poppins"/>
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_login_from_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="25dp"
+            android:fontFamily="@font/poppins_bold"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="Log In"
+            android:textAllCaps="false"
+            android:textColor="@color/text_view"
+            android:textSize="15sp"
+            app:backgroundTint="@color/blue"
+            app:cornerRadius="10dp"
+            app:elevation="10dp"
+            app:icon="@drawable/ic_baseline_arrow_forward_24"
+            app:iconGravity="textEnd"
+            app:iconTint="@color/text_view" />
+
+        <Button
+            android:id="@+id/btn_forgot_password_from_login"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/poppins"
+            android:text="Forgot Password?"
+            android:textColor="@color/text_view"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="15dp"
+                android:layout_weight="1"
+                android:background="@color/text_view" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="OR"
+                android:textColor="@color/text_view"
+                android:textSize="12sp"
+                app:fontFamily="@font/poppins_bold" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="50dp"
+                android:layout_weight="1"
+                android:background="@color/text_view" />
+
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_signup_from_login"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="25dp"
+            android:fontFamily="@font/poppins_bold"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="Sign Up"
+            android:textAllCaps="false"
+            android:textColor="@color/text_view"
+            android:textSize="15sp"
+            app:cornerRadius="10dp"
+            app:elevation="10dp"
+            app:icon="@drawable/ic_baseline_arrow_forward_24"
+            app:iconGravity="textEnd"
+            app:iconTint="@color/text_view"
+            app:strokeColor="@color/blue"
+            app:strokeWidth="2dp" />
     </LinearLayout>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_signup_from_login"
-        style="?attr/materialButtonOutlinedStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="25dp"
-        android:fontFamily="@font/poppins_bold"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:text="Sign Up"
-        android:textAllCaps="false"
-        android:textColor="@color/text_view"
-        android:textSize="15sp"
-        app:cornerRadius="10dp"
-        app:elevation="10dp"
-        app:icon="@drawable/ic_baseline_arrow_forward_24"
-        app:iconGravity="textEnd"
-        app:iconTint="@color/text_view"
-        app:strokeColor="@color/blue"
-        app:strokeWidth="2dp" />
-</LinearLayout>
+</ScrollView>

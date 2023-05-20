@@ -17,4 +17,7 @@
     <color name="edit_text_ip">#3C3A3A</color>
 
     <color name="text_view">#FFFFFF</color>
+
+    <color name="colorSnackBarSuccess">#8BC34A</color>
+    <color name="colorSnackBarError">#F72400</color>
 </resources>
