@@ -1,11 +1,24 @@
 package com.example.eliteworks
 
+
+
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import android.util.Patterns
 import com.example.eliteworks.databinding.ActivitySignUpBinding
+import okhttp3.ResponseBody
+import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.text.SimpleDateFormat
+
+import java.util.Date
+import java.util.UUID
 
 class SignUpActivity : BaseActivity() {
     private lateinit var binding: ActivitySignUpBinding
@@ -31,7 +44,43 @@ class SignUpActivity : BaseActivity() {
         {
             showErrorSnackBar("Validated",false)
             // Add User to Database from here and also check if user is already exist
+            registerUserApi()
+
         }
+    }
+
+    private fun registerUserApi() {
+        val name = binding.etFirstNameFromSignup.text.toString() + " " + binding.etLastNameFromSignup.text.toString()
+        val email = binding.etEmailFromSignup.text.toString()
+        val password = binding.etPasswordFromSignup.text.toString()
+
+        val registerRequest = RegisterRequest(UUID.randomUUID().toString(),name,email,password,"","","","","","",false);
+        val call = apiService.registerUser(registerRequest)
+
+        call.enqueue(object : Callback<ResponseBody>{
+            override fun onResponse(
+                call: Call<ResponseBody>,
+                response: Response<ResponseBody>
+            ) {
+                if (response.isSuccessful){
+                    val responseBody :ResponseBody? = response.body()
+                    if (responseBody != null) {
+                        showErrorSnackBar(responseBody.toString(),false)
+                        // add code if registration successful change activity and progress bar
+                        startActivity(Intent(this@SignUpActivity,ForgotPasswordActivity::class.java))
+                    }
+                }else{
+                    // add code if server error
+                    showErrorSnackBar("Server error",true)
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                // add code if failure
+                showErrorSnackBar(t.localizedMessage.toString(),true)
+                Log.e("TAG",t.localizedMessage.toString())
+            }
+        })
     }
 
     private fun signUpDetailsValidated(): Boolean {

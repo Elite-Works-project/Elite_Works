@@ -4,9 +4,14 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.util.Patterns
 import android.widget.Toast
 import com.example.eliteworks.databinding.ActivityLoginBinding
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class LoginActivity : BaseActivity() {
     private lateinit var binding: ActivityLoginBinding
@@ -35,9 +40,42 @@ class LoginActivity : BaseActivity() {
         if(loginDetailsValidated())
         {
             showErrorSnackBar("Validated",false)
+            loginUserApi()
 
             //Log in through from here
         }
+    }
+
+    private fun loginUserApi() {
+        val email = binding.etEmailFromLogin.text.toString()
+        val password = binding.etPasswordFromLogin.text.toString()
+
+        val loginRequest = LoginRequest("","",email,password,"","","","","","",false)
+        val call = apiService.loginUser(loginRequest)
+
+        call.enqueue(object : Callback<ResponseBody>{
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if(response.isSuccessful){
+                    val responseBody : ResponseBody? = response.body()
+                    if(responseBody!=null){
+                        Log.e("TAG",responseBody.string())
+                        showErrorSnackBar("Login Successful" + responseBody.string(),false)
+                        // add code if login successful change activity and progress bar
+                        startActivity(Intent(this@LoginActivity,ForgotPasswordActivity::class.java))
+                    }
+                }else{
+                    // add code if server error
+                    showErrorSnackBar("Server error - " + response.body().toString(),true)
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                // add code if failure
+                showErrorSnackBar(t.localizedMessage.toString(),true)
+                Log.e("TAG",t.localizedMessage.toString())
+            }
+
+        })
     }
 
     private fun loginDetailsValidated(): Boolean
