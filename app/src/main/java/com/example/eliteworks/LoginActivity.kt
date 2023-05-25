@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.util.Patterns
-import android.widget.Toast
 import com.example.eliteworks.databinding.ActivityLoginBinding
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -97,9 +96,5 @@ class LoginActivity : BaseActivity() {
                 true
             }
         }
-    }
-
-    override fun onBackPressed() {
-        doubleBackToExit()
     }
 }
