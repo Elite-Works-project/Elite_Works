@@ -13,7 +13,9 @@ data class RegisterRequest(
     val dob: String,
     val address: String,
     val photo: String,
-    val isProfileCompleted: Boolean
+    val isProfileCompleted: Boolean,
+    val token: String,
+    val tokenDate: String,
 )
 
 data class LoginRequest(
@@ -27,5 +29,7 @@ data class LoginRequest(
     val dob: String,
     val address: String,
     val photo: String,
-    val isProfileCompleted: Boolean
+    val isProfileCompleted: Boolean,
+    val token: String,
+    val tokenDate: String,
 )

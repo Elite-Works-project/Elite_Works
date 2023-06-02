@@ -54,7 +54,7 @@ class SignUpActivity : BaseActivity() {
         val email = binding.etEmailFromSignup.text.toString()
         val password = binding.etPasswordFromSignup.text.toString()
 
-        val registerRequest = RegisterRequest(UUID.randomUUID().toString(),name,email,password,"","","","","","",false);
+        val registerRequest = RegisterRequest(UUID.randomUUID().toString(),name,email,password,"","","","","","",false,"","");
         val call = apiService.registerUser(registerRequest)
 
         call.enqueue(object : Callback<ResponseBody>{
@@ -71,6 +71,7 @@ class SignUpActivity : BaseActivity() {
                     }
                 }else{
                     // add code if server error
+                    Log.e("TAG",response.body().toString())
                     showErrorSnackBar("Server error",true)
                 }
             }

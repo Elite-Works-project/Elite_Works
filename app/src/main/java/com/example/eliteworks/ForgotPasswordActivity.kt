@@ -1,10 +1,16 @@
 package com.example.eliteworks
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.util.Patterns
 import com.example.eliteworks.databinding.ActivityForgotPasswordBinding
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ForgotPasswordActivity : BaseActivity()
 {
@@ -20,8 +26,34 @@ class ForgotPasswordActivity : BaseActivity()
             if(emailIDValidated())
             {
                  //reset password mail will be sent to Email ID
+                resetPassword()
             }
         }
+    }
+
+    private fun resetPassword() {
+        val email = binding.etEmailFromForgotPassword.text.toString()
+        val call = apiService.forgotPassword(email)
+        call.enqueue(object : Callback<ResponseBody>{
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+              if(response.isSuccessful){
+                  val responseBody: ResponseBody? = response.body()
+                  if(responseBody!=null){
+                      Log.e("TAG",responseBody.string())
+                      showErrorSnackBar("Email Sent Successfully",false)
+                      startActivity(Intent(this@ForgotPasswordActivity,LoginActivity::class.java))
+                  }
+              }else{
+                  showErrorSnackBar("Server error - " + response.body().toString(),true)
+              }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                showErrorSnackBar(t.localizedMessage.toString(),true)
+                Log.e("TAG",t.localizedMessage.toString())
+            }
+
+        })
     }
 
     private fun emailIDValidated(): Boolean

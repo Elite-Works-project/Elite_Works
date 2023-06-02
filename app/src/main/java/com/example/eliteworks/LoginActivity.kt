@@ -1,7 +1,6 @@
 package com.example.eliteworks
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -49,7 +48,7 @@ class LoginActivity : BaseActivity() {
         val email = binding.etEmailFromLogin.text.toString()
         val password = binding.etPasswordFromLogin.text.toString()
 
-        val loginRequest = LoginRequest("","",email,password,"","","","","","",false)
+        val loginRequest = LoginRequest("","",email,password,"","","","","","",false,"","")
         val call = apiService.loginUser(loginRequest)
 
         call.enqueue(object : Callback<ResponseBody>{
