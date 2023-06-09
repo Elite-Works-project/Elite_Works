@@ -118,7 +118,7 @@
                 android:textColor="@color/edit_text_ip"
                 android:textColorHint="@color/edit_text_hint"
                 android:textSize="15sp"
-                app:fontFamily="@font/poppins"/>
+                app:fontFamily="@font/poppins" />
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton

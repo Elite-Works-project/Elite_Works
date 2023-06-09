@@ -20,6 +20,8 @@ class LoginActivity : BaseActivity() {
 
         supportActionBar?.hide()
 
+        //if already log in then redirect to page
+
         binding.btnSignupFromLogin.setOnClickListener{
             startActivity(Intent(this,SignUpActivity::class.java))
         }
@@ -37,7 +39,7 @@ class LoginActivity : BaseActivity() {
 
         if(loginDetailsValidated())
         {
-            showErrorSnackBar("Validated",false)
+//            showErrorSnackBar("Validated",false)
             loginUserApi()
 
             //Log in through from here
@@ -57,13 +59,14 @@ class LoginActivity : BaseActivity() {
                     val responseBody : ResponseBody? = response.body()
                     if(responseBody!=null){
                         Log.e("TAG",responseBody.string())
-                        showErrorSnackBar("Login Successful" + responseBody.string(),false)
+//                        showErrorSnackBar("Login Successful" + responseBody.string(),false)
                         // add code if login successful change activity and progress bar
+
                         startActivity(Intent(this@LoginActivity,ForgotPasswordActivity::class.java))
                     }
                 }else{
                     // add code if server error
-                    showErrorSnackBar("Server error - " + response.body().toString(),true)
+                    showErrorSnackBar("Server error - " + response.message(),true)
                 }
             }
 

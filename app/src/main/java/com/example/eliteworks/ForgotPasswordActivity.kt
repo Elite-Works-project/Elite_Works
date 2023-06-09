@@ -44,7 +44,7 @@ class ForgotPasswordActivity : BaseActivity()
                       startActivity(Intent(this@ForgotPasswordActivity,LoginActivity::class.java))
                   }
               }else{
-                  showErrorSnackBar("Server error - " + response.body().toString(),true)
+                  showErrorSnackBar("Server error - " + response.message(),true)
               }
             }
 

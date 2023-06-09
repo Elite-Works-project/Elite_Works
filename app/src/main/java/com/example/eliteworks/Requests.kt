@@ -1,7 +1,5 @@
 package com.example.eliteworks
 
-import java.util.Date
-
 data class RegisterRequest(
     val id: String,
     val name: String,

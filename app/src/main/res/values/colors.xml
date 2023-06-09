@@ -12,6 +12,8 @@
     <color name="blue">#4B89DC</color>
     <color name="theme_color">#FFFFFF</color>
 
+    <color name="opposite_theme_color">#323232</color>
+
 
     <color name="edit_text_bg">#F7F7F7</color>
     <color name="edit_text_hint">#C0BDBD</color>
@@ -21,5 +23,7 @@
 
     <color name="colorSnackBarSuccess">#8BC34A</color>
     <color name="colorSnackBarError">#F72400</color>
+
+    <color name="radioButtonSelected">#5D9CEC</color>
 
 </resources>

@@ -42,7 +42,7 @@ class SignUpActivity : BaseActivity() {
 
         if(signUpDetailsValidated())
         {
-            showErrorSnackBar("Validated",false)
+//            showErrorSnackBar("Validated",false)
             // Add User to Database from here and also check if user is already exist
             registerUserApi()
 
@@ -65,14 +65,14 @@ class SignUpActivity : BaseActivity() {
                 if (response.isSuccessful){
                     val responseBody :ResponseBody? = response.body()
                     if (responseBody != null) {
-                        showErrorSnackBar(responseBody.toString(),false)
+//                        showErrorSnackBar(responseBody.toString(),false)
                         // add code if registration successful change activity and progress bar
-                        startActivity(Intent(this@SignUpActivity,ForgotPasswordActivity::class.java))
+                        startActivity(Intent(this@SignUpActivity,LoginActivity::class.java))
                     }
                 }else{
                     // add code if server error
-                    Log.e("TAG",response.body().toString())
-                    showErrorSnackBar("Server error",true)
+                    Log.e("Signup Error",response.body().toString())
+                    showErrorSnackBar(response.message(),true)
                 }
             }
 

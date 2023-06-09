@@ -12,6 +12,8 @@
     <color name="custom_black">#323232</color>
     <color name="theme_color">#323232</color>
 
+    <color name="opposite_theme_color">#FFFFFF</color>
+
     <color name="edit_text_bg">#D9D9D9</color>
     <color name="edit_text_hint">#C0BDBD</color>
     <color name="edit_text_ip">#3C3A3A</color>
@@ -20,4 +22,6 @@
 
     <color name="colorSnackBarSuccess">#8BC34A</color>
     <color name="colorSnackBarError">#F72400</color>
+
+    <color name="radioButtonSelected">#4B89DC</color>
 </resources>
