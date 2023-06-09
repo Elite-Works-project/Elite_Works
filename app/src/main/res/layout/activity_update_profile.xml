@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    tools:context=".UpdateProfileActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="45dp"
+            android:src="@drawable/man"
+            app:civ_border_color="@color/custom_black"
+            app:civ_border_width="2dp" />
+
+        <EditText
+            android:id="@+id/et_name_from_update_profile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/edit_text_background"
+            android:hint="Name"
+            android:padding="15dp"
+            android:textColor="#747474"
+            android:textColorHint="@color/edit_text_hint"
+            android:textSize="15sp"
+            app:fontFamily="@font/poppins" />
+
+        <EditText
+            android:id="@+id/et_email_from_update_profile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/edit_text_background"
+            android:hint="Email ID"
+            android:padding="15dp"
+            android:textColor="#747474"
+            android:textColorHint="@color/edit_text_hint"
+            android:textSize="15sp"
+            app:fontFamily="@font/poppins" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_country_code_from_update_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="2dp"
+                android:background="@drawable/edit_text_background"
+                android:inputType="numberDecimal"
+                android:maxLength="10"
+                android:padding="15dp"
+                android:text="+91"
+                android:textColor="@color/custom_black"
+                android:textColorHint="@color/edit_text_hint"
+                android:textSize="15sp"
+                app:fontFamily="@font/poppins" />
+
+            <EditText
+                android:id="@+id/et_mobile_number_from_update_profile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/edit_text_background"
+                android:hint="Mobile Number"
+                android:inputType="numberDecimal"
+                android:maxLength="10"
+                android:padding="15dp"
+                android:textColor="@color/custom_black"
+                android:textColorHint="@color/edit_text_hint"
+                android:textSize="15sp"
+                app:fontFamily="@font/poppins" />
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/btn_verify_mobile_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Veify Number"
+            android:textColor="#747474"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/et_address_from_update_profile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/edit_text_background"
+            android:hint="Address"
+            android:maxLines="4"
+            android:padding="15dp"
+            android:textColor="@color/custom_black"
+            android:textColorHint="@color/edit_text_hint"
+            android:textSize="15sp"
+            app:fontFamily="@font/poppins" />
+
+        <RadioGroup
+            android:id="@+id/radio_group_gender"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="20dp"
+            android:checkedButton="@id/male_radio_button"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <RadioButton
+                android:id="@+id/male_radio_button"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/drawble_gender_tab_selector"
+                android:button="@null"
+                android:fontFamily="@font/poppins_bold"
+                android:gravity="center"
+                android:text="MALE"
+                android:textColor="@drawable/drawable_gender_tab_text_color_selector" />
+
+            <RadioButton
+                android:id="@+id/female_radio_button"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/drawble_gender_tab_selector"
+                android:button="@null"
+                android:fontFamily="@font/poppins_bold"
+                android:gravity="center"
+                android:text="FEMALE"
+                android:textColor="@drawable/drawable_gender_tab_text_color_selector" />
+        </RadioGroup>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_save_from_update_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="25dp"
+            android:fontFamily="@font/poppins_bold"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="Save"
+            android:textAllCaps="false"
+            android:textColor="@color/theme_color"
+            android:textSize="15sp"
+            app:backgroundTint="@color/radioButtonSelected"
+            app:cornerRadius="10dp" />
+    </LinearLayout>
+</ScrollView>
