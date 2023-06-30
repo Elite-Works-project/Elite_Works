@@ -1,21 +1,31 @@
 package com.example.eliteworks
 
-import android.content.pm.PackageManager
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
-import android.view.View
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.eliteworks.databinding.ActivityUpdateProfileBinding
 import com.google.android.gms.cast.framework.media.ImagePicker
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.google.gson.Gson
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.concurrent.TimeUnit
 
 class UpdateProfileActivity : BaseActivity(), OTPVerificationDialog.OTPVerificationListener,
@@ -31,7 +41,7 @@ class UpdateProfileActivity : BaseActivity(), OTPVerificationDialog.OTPVerificat
 
         mAuth = FirebaseAuth.getInstance()
         supportActionBar?.hide()
-
+        getUserData();
         binding.btnVerifyMobileNumber.setOnClickListener {
 
             if (binding.etMobileNumberFromUpdateProfile.text.length == 10) {
@@ -42,6 +52,9 @@ class UpdateProfileActivity : BaseActivity(), OTPVerificationDialog.OTPVerificat
         }
 
        //choose image and update image
+        binding.userImageUpdateProfile.setOnClickListener {
+           showDialog()
+        }
     }
 
     override fun onOTPVerified() {
@@ -54,6 +67,38 @@ class UpdateProfileActivity : BaseActivity(), OTPVerificationDialog.OTPVerificat
         showErrorSnackBar("Mobile number is verified", false)
     }
 
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode== RESULT_OK){
+            if(requestCode==1){
+                val imgUri:Uri = data?.data!!
+                if(null!=imgUri){
+                    binding.userImageUpdateProfile.setImageURI(imgUri);
+                    // send image to database
+                }
+            }
+        }
+    }
+
+    fun showDialog(){
+        val dialog = BottomSheetDialog(this)
+        dialog.setContentView(R.layout.image_dialog_layout)
+        dialog.show()
+
+        val camera = dialog.findViewById<LinearLayout>(R.id.ll_camera)
+        val gallery = dialog.findViewById<LinearLayout>(R.id.ll_gallery)
+
+        camera?.setOnClickListener {
+            // to be implemented
+        }
+
+        gallery?.setOnClickListener {
+            val intent = Intent(MediaStore.ACTION_PICK_IMAGES)
+            startActivityForResult(intent,1)
+            dialog.dismiss()
+        }
+    }
     fun sendOtp() {
 
         var countryCode = binding.etCountryCodeFromUpdateProfile.text.toString()
@@ -101,5 +146,10 @@ class UpdateProfileActivity : BaseActivity(), OTPVerificationDialog.OTPVerificat
 
     override fun resendOtp() {
         sendOtp()
+    }
+
+    fun getUserData(){
+        // get data from database
+
     }
 }
