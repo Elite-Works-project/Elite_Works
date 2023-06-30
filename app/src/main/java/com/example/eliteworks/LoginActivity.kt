@@ -5,7 +5,10 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.util.Patterns
+import android.widget.Toast
 import com.example.eliteworks.databinding.ActivityLoginBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -13,11 +16,15 @@ import retrofit2.Response
 
 class LoginActivity : BaseActivity() {
     private lateinit var binding: ActivityLoginBinding
+    private lateinit var auth:FirebaseAuth
+    private lateinit var currentuser:FirebaseUser
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        auth = FirebaseAuth.getInstance()
+//        currentuser = auth.currentUser!!
         supportActionBar?.hide()
 
         //if already log in then redirect to page
@@ -39,10 +46,9 @@ class LoginActivity : BaseActivity() {
 
         if(loginDetailsValidated())
         {
+            //Log in through here
 //            showErrorSnackBar("Validated",false)
             loginUserApi()
-
-            //Log in through from here
         }
     }
 
@@ -61,7 +67,8 @@ class LoginActivity : BaseActivity() {
                         Log.e("TAG",responseBody.string())
 //                        showErrorSnackBar("Login Successful" + responseBody.string(),false)
                         // add code if login successful change activity and progress bar
-
+//                        currentuser = auth.currentUser!!
+//                        Toast.makeText(this@LoginActivity,currentuser.uid, Toast.LENGTH_SHORT).show()
                         startActivity(Intent(this@LoginActivity,ForgotPasswordActivity::class.java))
                     }
                 }else{

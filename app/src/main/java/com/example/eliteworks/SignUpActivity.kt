@@ -9,7 +9,10 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import android.util.Patterns
+import android.widget.Toast
 import com.example.eliteworks.databinding.ActivitySignUpBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Call
@@ -22,12 +25,16 @@ import java.util.UUID
 
 class SignUpActivity : BaseActivity() {
     private lateinit var binding: ActivitySignUpBinding
+    private lateinit var auth: FirebaseAuth
+    private lateinit var currentuser: FirebaseUser
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         supportActionBar?.hide()
+
+//        auth = FirebaseAuth.getInstance()
 
         binding.btnLoginFromSignup.setOnClickListener {
             onBackPressed()
@@ -67,6 +74,8 @@ class SignUpActivity : BaseActivity() {
                     if (responseBody != null) {
 //                        showErrorSnackBar(responseBody.toString(),false)
                         // add code if registration successful change activity and progress bar
+                        val userId = responseBody.string() // Assuming the user ID is returned as a string
+                        Toast.makeText(this@SignUpActivity, "User ID: $userId", Toast.LENGTH_SHORT).show()
                         startActivity(Intent(this@SignUpActivity,LoginActivity::class.java))
                     }
                 }else{
