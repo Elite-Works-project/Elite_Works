@@ -1,5 +1,6 @@
 package com.example.eliteworks
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -7,41 +8,70 @@ import android.provider.MediaStore
 import android.util.Log
 import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.example.eliteworks.databinding.ActivityUpdateProfileBinding
-import com.google.android.gms.cast.framework.media.ImagePicker
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
-import com.google.gson.Gson
-import okhttp3.ResponseBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import java.io.IOException
 import java.util.concurrent.TimeUnit
 
-class UpdateProfileActivity : BaseActivity(), OTPVerificationDialog.OTPVerificationListener,
-    OTPVerificationDialog.resendOtpListener {
+open class UpdateProfileActivity : BaseActivity(), OTPVerificationDialog.OTPVerificationListener,
+    OTPVerificationDialog.resendOtpListener{
     private lateinit var binding: ActivityUpdateProfileBinding
     private lateinit var mCallback: PhoneAuthProvider.OnVerificationStateChangedCallbacks
     private lateinit var mAuth: FirebaseAuth
     private lateinit var otpVerificationDialog: OTPVerificationDialog
+    private var mUserImageUri: Uri? =null
+    private var mUser = User()
+    private var isNumberVerified = false
+    private var mUserProfileImageURL: String ?= null
+    val userHashMap = HashMap<String,Any>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityUpdateProfileBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
         mAuth = FirebaseAuth.getInstance()
+
         supportActionBar?.hide()
-        getUserData();
+
+        if(intent.hasExtra(Constants.EXTRA_USER_DETAILS))
+        {
+            mUser = intent.getParcelableExtra(Constants.EXTRA_USER_DETAILS)!!
+        }
+
+
+        binding.etNameFromUpdateProfile.setText(mUser.name)
+        binding.etEmailFromUpdateProfile.setText(mUser.email)
+        binding.etEmailFromUpdateProfile.isEnabled = false
+
+        if(!mUser.profileCompleted)
+        {
+            // complete profile
+
+            binding.etNameFromUpdateProfile.isEnabled = false
+        }
+        else
+        {
+            GlideLoader(this).loadUserPicture(mUser.photo,binding.userImageUpdateProfile)
+
+            binding.etMobileNumberFromUpdateProfile.setText(mUser.phoneNo)
+            binding.etMobileNumberFromUpdateProfile.setText(mUser.address)
+
+            if(mUser.gender== Constants.MALE)
+            {
+                binding.maleRadioButton.isChecked = true
+            }
+            else
+            {
+                binding.femaleRadioButton.isChecked = true
+            }
+        }
+
+
         binding.btnVerifyMobileNumber.setOnClickListener {
 
             if (binding.etMobileNumberFromUpdateProfile.text.length == 10) {
@@ -52,9 +82,70 @@ class UpdateProfileActivity : BaseActivity(), OTPVerificationDialog.OTPVerificat
         }
 
        //choose image and update image
-        binding.userImageUpdateProfile.setOnClickListener {
+        binding.uploadImageUpdateProfile.setOnClickListener {
            showDialog()
         }
+
+        binding.userImageUpdateProfile.setOnClickListener {
+
+            if(mUserImageUri != null)
+            {
+                val intent = Intent(this,ProfilePreviewActivity::class.java)
+                //here add changeImageDialogListener
+                intent.putExtra("userImageUri",mUserImageUri)
+                startActivity(intent)
+            }
+        }
+
+        binding.btnSaveFromUpdateProfile.setOnClickListener{
+            if(!isNumberVerified)
+            {
+                showErrorSnackBar("Please Verify Mobile Number",true)
+            }
+            else
+            {
+                if(mUserImageUri!=null)
+                {
+                    FirestoreClass().uploadImageToCloudStorage(this,mUserImageUri,Constants.USER_PROFILE_IMAGE)
+
+                    if(mUserProfileImageURL!=null)
+                    {
+                        userHashMap[Constants.PHOTO] = mUserProfileImageURL!!
+                    }
+                }
+
+                updateUserProfileDetails()
+            }
+        }
+
+    }
+
+    private fun updateUserProfileDetails() {
+        val name = binding.etNameFromUpdateProfile.text.toString().trim{ it <= ' '}
+        if(name != mUser.name)
+        {
+            userHashMap[Constants.FIRST_NAME] = name
+        }
+
+        val mobileNumber = binding.etCountryCodeFromUpdateProfile.text
+        mobileNumber.append(binding.etMobileNumberFromUpdateProfile.text.toString().trim{it <= ' '})
+        val gender = if(binding.femaleRadioButton.isChecked)
+        {
+            Constants.FEMALE
+        }
+        else{
+            Constants.MALE
+        }
+
+        if(mUserProfileImageURL!=null)
+        {
+            userHashMap[Constants.PHOTO] = mUserProfileImageURL!!
+        }
+        userHashMap[Constants.PHONENO] = mobileNumber
+        userHashMap[Constants.GENDER] = gender
+        userHashMap[Constants.COMPLETE_PROFILE] = 1
+//        showProgressDialog(resources.getString(R.string.please_wait))
+        FirestoreClass().updateUserDetails(this, userHashMap)
     }
 
     override fun onOTPVerified() {
@@ -64,18 +155,27 @@ class UpdateProfileActivity : BaseActivity(), OTPVerificationDialog.OTPVerificat
         binding.btnVerifyMobileNumber.isEnabled = false
         binding.etMobileNumberFromUpdateProfile.isEnabled = false
         binding.etCountryCodeFromUpdateProfile.isEnabled = false
+        isNumberVerified = true
         showErrorSnackBar("Mobile number is verified", false)
     }
 
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode== RESULT_OK){
+        if(resultCode== Activity.RESULT_OK){
             if(requestCode==1){
-                val imgUri:Uri = data?.data!!
-                if(null!=imgUri){
-                    binding.userImageUpdateProfile.setImageURI(imgUri);
-                    // send image to database
+                if(data!=null)
+                {
+                    try {
+                        mUserImageUri = data.data!!
+                        binding.userImageUpdateProfile.setImageURI(mUserImageUri)
+                    }
+                    catch (e: IOException)
+                    {
+                        e.printStackTrace()
+                        Toast.makeText(this, "Image Selection Failed!", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
@@ -151,5 +251,22 @@ class UpdateProfileActivity : BaseActivity(), OTPVerificationDialog.OTPVerificat
     fun getUserData(){
         // get data from database
 
+    }
+
+    fun imageUploadSuccess(imageRL:String)
+    {
+//        hideProgressDialog()
+        mUserProfileImageURL = imageRL
+
+        // as in any case we have to update the user details although we haven't selected a profile image.
+        updateUserProfileDetails()
+        Log.e("imageUploadSuccess: ", mUserProfileImageURL!!)
+    }
+
+    fun userProfileUpdateSuccess() {
+        hideProgressDialog()
+        Toast.makeText(this, "Profile Updated", Toast.LENGTH_SHORT).show()
+        startActivity(Intent(this,UserDashboardActivity::class.java))
+        finish()
     }
 }

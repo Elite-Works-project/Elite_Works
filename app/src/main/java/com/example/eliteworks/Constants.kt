@@ -9,6 +9,22 @@ import android.webkit.MimeTypeMap
 
 object Constants
 {
+    const val COMPLETE_PROFILE = "profileCompleted"
+    const val GENDER = "gender"
+    const val PHONENO = "phoneNO"
+    const val FIRST_NAME = "name"
+    const val RB_PREFERENCES = "RBPrefs"
+    const val USERS = "users"
+    const val LOGGED_IN_USERNAME = "logged_in_username"
+    const val EXTRA_USER_DETAILS = "extra_user_details"
+
+    const val USER_PROFILE_IMAGE = "User_profile_image"
+
+
+    const val PHOTO = "photo"
+    const val MALE = "Male"
+    const val FEMALE = "Female"
+
     const val READ_STORAGE_PERMISSION_CODE = 2
     const val PICK_IMAGE_REQUEST_CODE = 1
     fun showImageChooser(activity: Activity)

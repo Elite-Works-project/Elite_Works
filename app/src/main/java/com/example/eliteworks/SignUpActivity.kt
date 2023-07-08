@@ -9,7 +9,9 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import android.util.Patterns
+import android.widget.Toast
 import com.example.eliteworks.databinding.ActivitySignUpBinding
+import com.google.firebase.auth.FirebaseAuth
 import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Call
@@ -44,6 +46,7 @@ class SignUpActivity : BaseActivity() {
         {
 //            showErrorSnackBar("Validated",false)
             // Add User to Database from here and also check if user is already exist
+            showProgressDialog("Please wait...")
             registerUserApi()
 
         }
@@ -54,34 +57,31 @@ class SignUpActivity : BaseActivity() {
         val email = binding.etEmailFromSignup.text.toString()
         val password = binding.etPasswordFromSignup.text.toString()
 
-        val registerRequest = RegisterRequest(UUID.randomUUID().toString(),name,email,password,"","","","","","",false,"","");
-        val call = apiService.registerUser(registerRequest)
-
-        call.enqueue(object : Callback<ResponseBody>{
-            override fun onResponse(
-                call: Call<ResponseBody>,
-                response: Response<ResponseBody>
-            ) {
-                if (response.isSuccessful){
-                    val responseBody :ResponseBody? = response.body()
-                    if (responseBody != null) {
-//                        showErrorSnackBar(responseBody.toString(),false)
-                        // add code if registration successful change activity and progress bar
-                        startActivity(Intent(this@SignUpActivity,LoginActivity::class.java))
-                    }
-                }else{
-                    // add code if server error
-                    Log.e("Signup Error",response.body().toString())
-                    showErrorSnackBar(response.message(),true)
+        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email,password)
+            .addOnCompleteListener{task ->
+                if(task.isSuccessful)
+                {
+                    val firebaseUser = task.result.user
+                    val user = User(
+                        firebaseUser!!.uid,
+                        email, name, password,
+                        "","","","","",false,""
+                    )
+                    FirestoreClass().registerUser(this,user)
+                }
+                else
+                {
+                    hideProgressDialog()
+                    showErrorSnackBar(task.exception?.message.toString(),true)
                 }
             }
 
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                // add code if failure
-                showErrorSnackBar(t.localizedMessage.toString(),true)
-                Log.e("TAG",t.localizedMessage.toString())
-            }
-        })
+        }
+
+    fun userRegisteredSuccessfully() {
+        hideProgressDialog()
+        startActivity(Intent(this,LoginActivity::class.java))
+        Toast.makeText(this, "You are Registered Successfully", Toast.LENGTH_SHORT).show()
     }
 
     private fun signUpDetailsValidated(): Boolean {

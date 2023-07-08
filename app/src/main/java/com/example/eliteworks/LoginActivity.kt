@@ -16,18 +16,20 @@ import retrofit2.Response
 
 class LoginActivity : BaseActivity() {
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var auth:FirebaseAuth
-    private lateinit var currentuser:FirebaseUser
+    private lateinit var mAuth:FirebaseAuth
+    private lateinit var mUser:FirebaseUser
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        auth = FirebaseAuth.getInstance()
-//        currentuser = auth.currentUser!!
+        mAuth = FirebaseAuth.getInstance()
+
         supportActionBar?.hide()
 
         //if already log in then redirect to page
+
+
 
         binding.btnSignupFromLogin.setOnClickListener{
             startActivity(Intent(this,SignUpActivity::class.java))
@@ -38,6 +40,7 @@ class LoginActivity : BaseActivity() {
         }
 
         binding.btnLoginFromLogin.setOnClickListener{
+            showProgressDialog("Please wait...")
             loginUser()
         }
     }
@@ -64,15 +67,12 @@ class LoginActivity : BaseActivity() {
                 if(response.isSuccessful){
                     val responseBody : ResponseBody? = response.body()
                     if(responseBody!=null){
-                        Log.e("TAG",responseBody.string())
-//                        showErrorSnackBar("Login Successful" + responseBody.string(),false)
-                        // add code if login successful change activity and progress bar
-//                        currentuser = auth.currentUser!!
-//                        Toast.makeText(this@LoginActivity,currentuser.uid, Toast.LENGTH_SHORT).show()
+                        FirestoreClass().getUserDetails(this@LoginActivity)
                         startActivity(Intent(this@LoginActivity,ForgotPasswordActivity::class.java))
                     }
                 }else{
                     // add code if server error
+                    hideProgressDialog()
                     showErrorSnackBar("Server error - " + response.message(),true)
                 }
             }
@@ -105,5 +105,23 @@ class LoginActivity : BaseActivity() {
                 true
             }
         }
+    }
+
+    fun userLoggedInSuccess(user: User) {
+        hideProgressDialog()
+
+        Log.i("First Name:",user.name)
+        Log.i("Email:",user.email)
+
+        if(!user.profileCompleted)
+        {
+            val intent = Intent(this, UpdateProfileActivity::class.java)
+            intent.putExtra(Constants.EXTRA_USER_DETAILS,user)
+            startActivity(intent)
+        }
+        else {
+            startActivity(Intent(this, UserDashboardActivity::class.java))
+        }
+        finish()
     }
 }
