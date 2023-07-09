@@ -5,14 +5,9 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.util.Patterns
-import android.widget.Toast
 import com.example.eliteworks.databinding.ActivityLoginBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import okhttp3.ResponseBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class LoginActivity : BaseActivity() {
     private lateinit var binding: ActivityLoginBinding
@@ -41,49 +36,50 @@ class LoginActivity : BaseActivity() {
 
         binding.btnLoginFromLogin.setOnClickListener{
             showProgressDialog("Please wait...")
-            loginUser()
+            validateAndLoginUser()
         }
     }
 
-    private fun loginUser() {
+    private fun validateAndLoginUser() {
 
         if(loginDetailsValidated())
         {
             //Log in through here
 //            showErrorSnackBar("Validated",false)
-            loginUserApi()
+            loginUser()
         }
     }
 
-    private fun loginUserApi() {
-        val email = binding.etEmailFromLogin.text.toString()
-        val password = binding.etPasswordFromLogin.text.toString()
+    private fun loginUser() {
+        val email = binding.etEmailFromLogin.text.toString().trim{it <= ' '}
+        val password = binding.etPasswordFromLogin.text.toString().trim{it <= ' '}
 
-        val loginRequest = LoginRequest("","",email,password,"","","","","","",false,"","")
-        val call = apiService.loginUser(loginRequest)
-
-        call.enqueue(object : Callback<ResponseBody>{
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                if(response.isSuccessful){
-                    val responseBody : ResponseBody? = response.body()
-                    if(responseBody!=null){
-                        FirestoreClass().getUserDetails(this@LoginActivity)
-                        startActivity(Intent(this@LoginActivity,ForgotPasswordActivity::class.java))
-                    }
-                }else{
-                    // add code if server error
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener{task->
+                if(task.isSuccessful)
+                {
+                    FirestoreClass().getUserDetails(this)
+                }
+                else
+                {
                     hideProgressDialog()
-                    showErrorSnackBar("Server error - " + response.message(),true)
+                    if(!Constants.isNetworkConnected(this))
+                    {
+                        showErrorSnackBar("Sorry, unable to login. Please check your internet connection.", true)
+                    }
                 }
             }
-
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                // add code if failure
-                showErrorSnackBar(t.localizedMessage.toString(),true)
-                Log.e("TAG",t.localizedMessage.toString())
+            .addOnFailureListener { e->
+                hideProgressDialog()
+                if(!Constants.isNetworkConnected(this))
+                {
+                    showErrorSnackBar("Sorry, unable to login. Please check your internet connection.", true)
+                }
+                else
+                {
+                    showErrorSnackBar("Incorrect Email ID or Password", true)
+                }
             }
-
-        })
     }
 
     private fun loginDetailsValidated(): Boolean
@@ -115,7 +111,7 @@ class LoginActivity : BaseActivity() {
 
         if(!user.profileCompleted)
         {
-            val intent = Intent(this, UpdateProfileActivity::class.java)
+            val intent = Intent(this, CompleteProfileActivity::class.java)
             intent.putExtra(Constants.EXTRA_USER_DETAILS,user)
             startActivity(intent)
         }

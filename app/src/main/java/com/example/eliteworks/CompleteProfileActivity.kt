@@ -5,10 +5,11 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.TextUtils
 import android.util.Log
 import android.widget.LinearLayout
 import android.widget.Toast
-import com.example.eliteworks.databinding.ActivityUpdateProfileBinding
+import com.example.eliteworks.databinding.ActivityCompleteProfileBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
@@ -18,20 +19,23 @@ import com.google.firebase.auth.PhoneAuthProvider
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
-open class UpdateProfileActivity : BaseActivity(), OTPVerificationDialog.OTPVerificationListener,
+open class CompleteProfileActivity : BaseActivity(), OTPVerificationDialog.OTPVerificationListener,
     OTPVerificationDialog.resendOtpListener{
-    private lateinit var binding: ActivityUpdateProfileBinding
+    private lateinit var binding: ActivityCompleteProfileBinding
     private lateinit var mCallback: PhoneAuthProvider.OnVerificationStateChangedCallbacks
     private lateinit var mAuth: FirebaseAuth
     private lateinit var otpVerificationDialog: OTPVerificationDialog
     private var mUserImageUri: Uri? =null
     private var mUser = User()
-    private var isNumberVerified = false
+
+    //TODO : Change to false after testing mode
+    private var isNumberVerified = true
+
     private var mUserProfileImageURL: String ?= null
     val userHashMap = HashMap<String,Any>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        binding = ActivityUpdateProfileBinding.inflate(layoutInflater)
+        binding = ActivityCompleteProfileBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         mAuth = FirebaseAuth.getInstance()
@@ -98,11 +102,7 @@ open class UpdateProfileActivity : BaseActivity(), OTPVerificationDialog.OTPVeri
         }
 
         binding.btnSaveFromUpdateProfile.setOnClickListener{
-            if(!isNumberVerified)
-            {
-                showErrorSnackBar("Please Verify Mobile Number",true)
-            }
-            else
+            if(detailsValidate())
             {
                 if(mUserImageUri!=null)
                 {
@@ -120,15 +120,32 @@ open class UpdateProfileActivity : BaseActivity(), OTPVerificationDialog.OTPVeri
 
     }
 
+    private fun detailsValidate(): Boolean
+    {
+        if(!isNumberVerified)
+        {
+            showErrorSnackBar("Please Verify Mobile Number",true)
+            return false
+        }
+
+        if(TextUtils.isEmpty(binding.etAddressFromUpdateProfile.text.toString().trim{it <= ' '}))
+        {
+            showErrorSnackBar("Please Enter Address",true)
+            return false
+        }
+        return true
+    }
+
     private fun updateUserProfileDetails() {
         val name = binding.etNameFromUpdateProfile.text.toString().trim{ it <= ' '}
         if(name != mUser.name)
         {
-            userHashMap[Constants.FIRST_NAME] = name
+            userHashMap[Constants.NAME] = name
         }
 
-        val mobileNumber = binding.etCountryCodeFromUpdateProfile.text
-        mobileNumber.append(binding.etMobileNumberFromUpdateProfile.text.toString().trim{it <= ' '})
+        val countryCode = binding.etCountryCodeFromUpdateProfile.text.toString()
+        val phoneNo = binding.etMobileNumberFromUpdateProfile.text.toString()
+        val mobileNumber = countryCode+phoneNo
         val gender = if(binding.femaleRadioButton.isChecked)
         {
             Constants.FEMALE
@@ -141,10 +158,25 @@ open class UpdateProfileActivity : BaseActivity(), OTPVerificationDialog.OTPVeri
         {
             userHashMap[Constants.PHOTO] = mUserProfileImageURL!!
         }
+        else{
+            userHashMap[Constants.PHOTO]  = ""
+        }
+
+        val address = binding.etAddressFromUpdateProfile.text.toString().trim{it <=' '}
+        userHashMap[Constants.ADDRESS] = address
+
         userHashMap[Constants.PHONENO] = mobileNumber
         userHashMap[Constants.GENDER] = gender
-        userHashMap[Constants.COMPLETE_PROFILE] = 1
+        userHashMap[Constants.COMPLETE_PROFILE] = true
+
+        // these fields remains same
+        userHashMap[Constants.EMAIL] = mUser.email
+        userHashMap[Constants.ID] = mUser.id
+        userHashMap[Constants.PASSWORD] = mUser.password
+        userHashMap[Constants.ROLE] = mUser.role
+
 //        showProgressDialog(resources.getString(R.string.please_wait))
+        Log.e("UserMap", "updateUserProfileDetails: $userHashMap", )
         FirestoreClass().updateUserDetails(this, userHashMap)
     }
 
@@ -213,7 +245,7 @@ open class UpdateProfileActivity : BaseActivity(), OTPVerificationDialog.OTPVeri
             override fun onVerificationFailed(e: FirebaseException) {
 //                Log.e("Mobile number", "onVerificationFailed: ${countryCode+mobileNumber}")
                 Log.e("OTP", "onVerificationFailed: ", e)
-                Toast.makeText(this@UpdateProfileActivity, e.localizedMessage, Toast.LENGTH_SHORT)
+                Toast.makeText(this@CompleteProfileActivity, e.localizedMessage, Toast.LENGTH_SHORT)
                     .show()
             }
 
@@ -222,14 +254,14 @@ open class UpdateProfileActivity : BaseActivity(), OTPVerificationDialog.OTPVeri
                 token: PhoneAuthProvider.ForceResendingToken,
             ) {
                 otpVerificationDialog = OTPVerificationDialog(
-                    this@UpdateProfileActivity,
+                    this@CompleteProfileActivity,
                     countryCode,
                     mobileNumber,
                     verificationId,
-                    this@UpdateProfileActivity
+                    this@CompleteProfileActivity
                 )
-                otpVerificationDialog.setOTPVerificationListener(this@UpdateProfileActivity)
-                otpVerificationDialog.setResendOtpListener(this@UpdateProfileActivity)
+                otpVerificationDialog.setOTPVerificationListener(this@CompleteProfileActivity)
+                otpVerificationDialog.setResendOtpListener(this@CompleteProfileActivity)
                 otpVerificationDialog.setCancelable(false)
                 otpVerificationDialog.show()
             }
@@ -267,6 +299,5 @@ open class UpdateProfileActivity : BaseActivity(), OTPVerificationDialog.OTPVeri
         hideProgressDialog()
         Toast.makeText(this, "Profile Updated", Toast.LENGTH_SHORT).show()
         startActivity(Intent(this,UserDashboardActivity::class.java))
-        finish()
     }
 }

@@ -24,7 +24,7 @@
             android:name=".ProfilePreviewActivity"
             android:exported="false" />
         <activity
-            android:name=".UpdateProfileActivity"
+            android:name=".CompleteProfileActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize|stateVisible">
 

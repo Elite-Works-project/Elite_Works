@@ -5,22 +5,10 @@ package com.example.eliteworks
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
 import android.util.Patterns
 import android.widget.Toast
 import com.example.eliteworks.databinding.ActivitySignUpBinding
 import com.google.firebase.auth.FirebaseAuth
-import okhttp3.ResponseBody
-import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.text.SimpleDateFormat
-
-import java.util.Date
-import java.util.UUID
 
 class SignUpActivity : BaseActivity() {
     private lateinit var binding: ActivitySignUpBinding
@@ -47,15 +35,15 @@ class SignUpActivity : BaseActivity() {
 //            showErrorSnackBar("Validated",false)
             // Add User to Database from here and also check if user is already exist
             showProgressDialog("Please wait...")
-            registerUserApi()
+            registerUser()
 
         }
     }
 
-    private fun registerUserApi() {
-        val name = binding.etFirstNameFromSignup.text.toString() + " " + binding.etLastNameFromSignup.text.toString()
-        val email = binding.etEmailFromSignup.text.toString()
-        val password = binding.etPasswordFromSignup.text.toString()
+    private fun registerUser() {
+        val name = binding.etFirstNameFromSignup.text.toString().trim{it <= ' '} + " " + binding.etLastNameFromSignup.text.toString().trim{it <= ' '}
+        val email = binding.etEmailFromSignup.text.toString().trim{it <= ' '}
+        val password = binding.etPasswordFromSignup.text.toString().trim{it <= ' '}
 
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email,password)
             .addOnCompleteListener{task ->
@@ -65,7 +53,7 @@ class SignUpActivity : BaseActivity() {
                     val user = User(
                         firebaseUser!!.uid,
                         email, name, password,
-                        "","","","","",false,""
+                        "","","","",false,""
                     )
                     FirestoreClass().registerUser(this,user)
                 }

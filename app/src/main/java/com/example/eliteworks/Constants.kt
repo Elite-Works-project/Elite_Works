@@ -1,7 +1,9 @@
 package com.example.eliteworks
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
 import android.net.Uri
 import android.provider.MediaStore
 import android.webkit.MimeTypeMap
@@ -9,10 +11,11 @@ import android.webkit.MimeTypeMap
 
 object Constants
 {
+    const val ROLE = "role"
     const val COMPLETE_PROFILE = "profileCompleted"
     const val GENDER = "gender"
-    const val PHONENO = "phoneNO"
-    const val FIRST_NAME = "name"
+    const val PHONENO = "phoneNo"
+    const val NAME = "name"
     const val RB_PREFERENCES = "RBPrefs"
     const val USERS = "users"
     const val LOGGED_IN_USERNAME = "logged_in_username"
@@ -24,6 +27,10 @@ object Constants
     const val PHOTO = "photo"
     const val MALE = "Male"
     const val FEMALE = "Female"
+    const val PASSWORD = "password"
+    const val ID = "id"
+    const val EMAIL = "email"
+    const val ADDRESS = "address"
 
     const val READ_STORAGE_PERMISSION_CODE = 2
     const val PICK_IMAGE_REQUEST_CODE = 1
@@ -48,5 +55,11 @@ object Constants
         //c:/Tushar Bhut/download/user.jpg  --> Uri
         // this will return the .jpg
         return MimeTypeMap.getSingleton().getExtensionFromMimeType(activity.contentResolver.getType(uri!!))
+    }
+
+    fun isNetworkConnected(context: Context): Boolean {
+        val cm= context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        return cm.activeNetworkInfo != null && cm.activeNetworkInfo!!.isConnected
     }
 }

@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
-import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
@@ -44,6 +43,8 @@ class FirestoreClass
         {
             currentUserID = currentUser!!.uid
         }
+
+        Log.i("Current User", "getCurrentUserID: $currentUserID")
         return currentUserID
     }
 
@@ -104,13 +105,15 @@ class FirestoreClass
 
     fun updateUserDetails(activity: Activity,userHashMap: HashMap<String,Any>)
     {
+        val userMap = mapOf<String, Any>(*userHashMap.map { it.key to it.value }.toTypedArray())
+
         mFireStore.collection(Constants.USERS)
             .document(getCurrentUserID())
-            .update(userHashMap)
+            .update(userMap)
             .addOnSuccessListener {
                 when(activity)
                 {
-                    is UpdateProfileActivity ->{
+                    is CompleteProfileActivity ->{
                         activity.userProfileUpdateSuccess()
                     }
                 }
@@ -118,7 +121,7 @@ class FirestoreClass
             .addOnFailureListener { e->
                 when(activity)
                 {
-                    is UpdateProfileActivity ->{
+                    is CompleteProfileActivity ->{
                         activity.hideProgressDialog()
                     }
                 }
@@ -144,7 +147,7 @@ class FirestoreClass
 //                    Log.e("Downloadable Image URL ",uri.toString() )
                     when(activity)
                     {
-                        is UpdateProfileActivity -> {
+                        is CompleteProfileActivity -> {
                             activity.imageUploadSuccess(uri.toString())
                         }
                     }
@@ -154,7 +157,7 @@ class FirestoreClass
             .addOnFailureListener {exception ->
                 when(activity)
                 {
-                    is UpdateProfileActivity -> {
+                    is CompleteProfileActivity -> {
                         activity.hideProgressDialog()
                     }
                 }
