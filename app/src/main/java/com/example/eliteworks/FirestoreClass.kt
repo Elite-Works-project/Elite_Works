@@ -24,6 +24,7 @@ class FirestoreClass
 //          userInfo is Field and SetOptions is set to merge. It is for if we wants to merge later on instead of replacing the fields.
             .set(userInfo, SetOptions.merge())
             .addOnCompleteListener{
+                Log.e("TAG","task successfully")
                 activity.userRegisteredSuccessfully()
             }
             .addOnFailureListener {e->
