@@ -17,7 +17,7 @@ class UserDashboardActivity : AppCompatActivity() {
 
         getUserDetails()
 
-        binding.btnLogOut.setOnClickListener{
+        binding.btnLogout.setOnClickListener{
             logoutUser()
         }
     }
@@ -27,7 +27,12 @@ class UserDashboardActivity : AppCompatActivity() {
     }
 
     fun userDetailsSuccess(user: User) {
-        binding.textView.text = "Congratulations You've Logged In ${user.name} , ${user.email}"
+        binding.nameUserDashboard.text = user.name
+
+        if(user.photo!="")
+        {
+            GlideLoader(this).loadUserPicture(user.photo,binding.imageUserDashboard)
+        }
     }
 
     private fun logoutUser() {

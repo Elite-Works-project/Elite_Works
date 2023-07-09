@@ -24,4 +24,7 @@
     <color name="colorSnackBarError">#F72400</color>
 
     <color name="radioButtonSelected">#4B89DC</color>
+
+    <color name="upaad">#D23131</color>
+    <color name="jamaa">#4B89DC</color>
 </resources>
