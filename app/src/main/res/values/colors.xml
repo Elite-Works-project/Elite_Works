@@ -29,4 +29,8 @@
     <color name="upaad">#D23131</color>
     <color name="jamaa">#4B89DC</color>
 
+    <color name="tasks_card_view_color">#4B89DC</color>
+
+    <color name="fragment_home_bg">#FFFFFF</color>
+
 </resources>

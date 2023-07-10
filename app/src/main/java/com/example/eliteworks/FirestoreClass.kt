@@ -87,9 +87,9 @@ class FirestoreClass
                     is ProfilePreviewActivity ->{
                         activity.userDetailsSuccess(user)
                     }
-                    is UserDashboardActivity ->{
-                        activity.userDetailsSuccess(user)
-                    }
+//                    is UserDashboardActivity ->{
+//                        activity.userDetailsSuccess(user)
+//                    }
                 }
             }
             .addOnFailureListener { e->
