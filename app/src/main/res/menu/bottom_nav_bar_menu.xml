@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/bottom_nav_bar_home"
+        android:icon="@drawable/home"
+        android:title="Home" />
+
+    <item
+        android:id="@+id/bottom_nav_bar_completed"
+        android:icon="@drawable/completed"
+        android:title="Completed" />
+
+    <item
+        android:id="@+id/bottom_nav_bar_leaves"
+        android:icon="@drawable/leaves"
+        android:title="Leaves" />
+
+    <item
+        android:id="@+id/bottom_nav_bar_salary"
+        android:icon="@drawable/salary"
+        android:title="Salary" />
+
+    <item
+        android:id="@+id/bottom_nav_bar_profile"
+        android:icon="@drawable/profile"
+        android:title="Profile" />
+</menu>
