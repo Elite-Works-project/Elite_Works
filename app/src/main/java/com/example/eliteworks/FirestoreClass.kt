@@ -3,9 +3,12 @@ package com.example.eliteworks
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
+import androidx.core.content.ContextCompat.startActivity
+import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
@@ -14,6 +17,7 @@ import com.google.firebase.storage.FirebaseStorage
 class FirestoreClass
 {
     private val mFireStore = FirebaseFirestore.getInstance()
+    private val mAuth = FirebaseAuth.getInstance()
 
     fun registerUser(activity: SignUpActivity, userInfo:User)
     {
@@ -45,7 +49,7 @@ class FirestoreClass
             currentUserID = currentUser!!.uid
         }
 
-        Log.i("Current User", "getCurrentUserID: $currentUserID")
+//        Log.i("Current User", "getCurrentUserID: $currentUserID")
         return currentUserID
     }
 
@@ -101,6 +105,55 @@ class FirestoreClass
                     }
                 }
                 Log.e(activity.javaClass.simpleName, "Error while getting user details",e )
+            }
+    }
+
+    fun getUserDetailsFragment(fragment: Fragment)
+    {
+        mFireStore.collection(Constants.USERS)
+            .document(getCurrentUserID())
+            .get()
+            .addOnCompleteListener{ document ->
+                Log.i(fragment.javaClass.simpleName, document.toString())
+
+                // here we receive the document snapshot and we convert it into data model object
+                val user = document.result.toObject(User::class.java)!!
+
+                /* here MODE_PRIVATE is for default mode means where the created file can only be accessed
+                    by the calling application means to all the applicants who shares the same User ID
+                */
+                val sharedPreferences = fragment.requireActivity().getSharedPreferences(
+                    Constants.RB_PREFERENCES,Context.MODE_PRIVATE
+                )
+
+                // for editing shared preferences
+                val editor: SharedPreferences.Editor = sharedPreferences.edit()
+                /*
+                    Key : logged_in_username
+                    Value : Tushar Bhut (as example)
+                */
+
+                editor.putString(
+                    Constants.LOGGED_IN_USERNAME,
+                    user.name
+                )
+                editor.apply()
+                when(fragment)
+                {
+//                    is HomeFragment -> {
+//                        fragment.userDetailsSuccess(user)
+//                    }
+                }
+            }
+            .addOnFailureListener { e->
+                // hide progress dialog is there is any error. And print the error in log
+                when(fragment)
+                {
+                    is HomeFragment -> {
+                        fragment.hideProgressDialog()
+                    }
+                }
+                Log.e(fragment.javaClass.simpleName, "Error while getting user details",e )
             }
     }
 

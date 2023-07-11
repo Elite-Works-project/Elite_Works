@@ -16,9 +16,9 @@
         android:title="Leaves" />
 
     <item
-        android:id="@+id/bottom_nav_bar_salary"
-        android:icon="@drawable/salary"
-        android:title="Salary" />
+        android:id="@+id/bottom_nav_bar_attendance"
+        android:icon="@drawable/attendance"
+        android:title="Attendance"/>
 
     <item
         android:id="@+id/bottom_nav_bar_profile"
