@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
 import com.example.eliteworks.databinding.FragmentHomeBinding
 import com.example.eliteworks.databinding.FragmentProfileBinding
 
@@ -21,6 +22,7 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        FirestoreClass().getUserDetailsFragment(this){user -> userDetailsSuccess(user) }
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
@@ -29,5 +31,11 @@ class ProfileFragment : Fragment() {
         }
 
         return root
+    }
+
+    private fun userDetailsSuccess(user: User) {
+        Glide.with(this).load(user.photo).into(binding.imageUserDashboard)
+        binding.nameProfileFragment.text=user.name
+        binding.phoneProfileFragment.text=user.phoneNo
     }
 }

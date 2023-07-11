@@ -63,6 +63,7 @@ class FirestoreClass
 
                 // here we receive the document snapshot and we convert it into data model object
                 val user = document.result.toObject(User::class.java)!!
+                Log.e("TAG",user.toString())
 
                 /* here MODE_PRIVATE is for default mode means where the created file can only be accessed
                     by the calling application means to all the applicants who shares the same User ID
@@ -108,7 +109,7 @@ class FirestoreClass
             }
     }
 
-    fun getUserDetailsFragment(fragment: Fragment)
+    fun getUserDetailsFragment(fragment: Fragment,callback: (User)->Unit)
     {
         mFireStore.collection(Constants.USERS)
             .document(getCurrentUserID())
@@ -118,6 +119,8 @@ class FirestoreClass
 
                 // here we receive the document snapshot and we convert it into data model object
                 val user = document.result.toObject(User::class.java)!!
+
+                callback(user)
 
                 /* here MODE_PRIVATE is for default mode means where the created file can only be accessed
                     by the calling application means to all the applicants who shares the same User ID
@@ -140,9 +143,9 @@ class FirestoreClass
                 editor.apply()
                 when(fragment)
                 {
-//                    is HomeFragment -> {
-//                        fragment.userDetailsSuccess(user)
-//                    }
+                    is HomeFragment -> {
+                        fragment.userDetailsSuccess(user)
+                    }
                 }
             }
             .addOnFailureListener { e->
