@@ -3,74 +3,61 @@ package com.example.eliteworks
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.example.eliteworks.databinding.ActivityUserDashboardBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 
-private var currentFragment:Fragment = HomeFragment()
+//private var currentFragment:Fragment = HomeFragment()
 class UserDashboardActivity : AppCompatActivity() {
     private lateinit var binding:ActivityUserDashboardBinding
     private lateinit var mAuth: FirebaseAuth
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        binding = ActivityUserDashboardBinding.inflate(layoutInflater)
+
         super.onCreate(savedInstanceState)
+        binding = ActivityUserDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        replaceFragment(currentFragment)
+//        replaceFragment(currentFragment)
         mAuth = FirebaseAuth.getInstance()
-        getUserDetails()
 
-        //while changing the Theme Mode (Light/Dark) , the apps got reloaded , so each time it shows the HomeFragment. this technique will help to prevent it.
-        binding.bottomNavigationViewUserDashboard.setOnItemSelectedListener {item->
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_dashboard) as NavHostFragment
+        navController = navHostFragment.navController
+        Log.e("NavController", "onCreate: $navController", )
 
-            when(item.itemId){
-                R.id.bottom_nav_bar_home -> currentFragment = HomeFragment()
-                R.id.bottom_nav_bar_completed -> currentFragment = CompletedFragment()
-                R.id.bottom_nav_bar_leaves -> currentFragment = LeavesFragment()
-                R.id.bottom_nav_bar_attendance -> currentFragment = AttendanceFragment()
-                R.id.bottom_nav_bar_profile -> currentFragment = ProfileFragment()
-                else ->{
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView_user_dashboard)
 
-                }
-            }
-            replaceFragment(currentFragment)
-            true
+        // This line gives error
+//        val appBarConfiguration = AppBarConfiguration(
+//            setOf(
+//            R.id.navigation_Home,R.id.navigation_completed,R.id.navigation_leaves,R.id.navigation_attendance,R.id.navigation_profile
+//            )
+//        )
+//        setupActionBarWithNavController(navController, appBarConfiguration)
 
-        }
 
-//        binding.btnLogout.setOnClickListener{
-//            logoutUser()
-//        }
+        bottomNavigationView.setupWithNavController(navController)
     }
 
-    private fun getUserDetails() {
-        FirestoreClass().getUserDetails(this)
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
-    private fun replaceFragment(fragment: Fragment)
-    {
-        val fragmentManager = supportFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.frameLayout_user_dashboard,fragment)
-        fragmentTransaction.commit()
-    }
-
-//    fun userDetailsSuccess(user: User) {
-//        binding.nameUserDashboard.text = user.name
-//
-//        if(user.photo!="")
-//        {
-//            GlideLoader(this).loadUserPicture(user.photo,binding.imageUserDashboard)
-//        }
+//    private fun replaceFragment(fragment: Fragment)
+//    {
+//        val fragmentManager = supportFragmentManager
+//        val fragmentTransaction = fragmentManager.beginTransaction()
+//        fragmentTransaction.replace(R.id.frameLayout_user_dashboard,fragment)
+//        fragmentTransaction.commit()
 //    }
-
-    private fun logoutUser() {
-        mAuth.signOut()
-        // Navigate back to the LoginActivity or any other desired destination
-        // For example, navigate back to the LoginActivity:
-        currentFragment = HomeFragment()
-        startActivity(Intent(this, LoginActivity::class.java))
-        finish() // Optional: finish the current activity to prevent the user from coming back to it using the back button
-    }
 
 }
