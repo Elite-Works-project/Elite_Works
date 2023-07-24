@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/navigation_Home"
+    android:id="@+id/mobile_navigation">
+
+    <fragment
+        android:id="@+id/navigation_Home"
+        android:name="com.example.eliteworks.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home"/>
+
+    <fragment
+        android:id="@+id/navigation_completed"
+        android:name="com.example.eliteworks.CompletedFragment"
+        android:label="Completed"
+        tools:layout="@layout/fragment_completed" />
+
+    <fragment
+        android:id="@+id/navigation_leaves"
+        android:name="com.example.eliteworks.LeavesFragment"
+        android:label="Leaves"
+        tools:layout="@layout/fragment_leaves" />
+
+    <fragment
+        android:id="@+id/navigation_attendance"
+        android:name="com.example.eliteworks.AttendanceFragment"
+        android:label="Attendance"
+        tools:layout="@layout/fragment_attendance" />
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.example.eliteworks.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile" />
+</navigation>
