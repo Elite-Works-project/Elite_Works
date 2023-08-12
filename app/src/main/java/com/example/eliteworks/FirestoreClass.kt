@@ -3,11 +3,9 @@ package com.example.eliteworks
 
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
-import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -18,6 +16,7 @@ class FirestoreClass
 {
     private val mFireStore = FirebaseFirestore.getInstance()
     private val mAuth = FirebaseAuth.getInstance()
+    private var user:User? = null
 
     fun registerUser(activity: SignUpActivity, userInfo:User)
     {
@@ -37,21 +36,37 @@ class FirestoreClass
             }
     }
 
-    fun getCurrentUserID():String
-    {
+    fun getCurrentUserID(): String {
         //Instance of current user using FirebaseAuth
         val currentUser = FirebaseAuth.getInstance().currentUser
 
         // Assigns the currentUserID if it's not null or else keep it blank
-        var currentUserID = ""
-        if(currentUserID!=null)
-        {
-            currentUserID = currentUser!!.uid
-        }
 
 //        Log.i("Current User", "getCurrentUserID: $currentUserID")
-        return currentUserID
+        return currentUser!!.uid
     }
+
+    fun getUser(): User? {
+        return user
+    }
+
+    fun updatePasswordInFirestore(userId: String, newPassword: String, onComplete: () -> Unit) {
+        val userMap = hashMapOf<String, Any>(
+            Constants.PASSWORD to newPassword
+        )
+
+        mFireStore.collection(Constants.USERS)
+            .document(userId)
+            .update(userMap)
+            .addOnSuccessListener {
+                onComplete()
+            }
+            .addOnFailureListener { e ->
+                // Handle failure
+                Log.e("FirestoreClass", "Error updating password: ${e.message}", e)
+            }
+    }
+
 
     fun getUserDetails(activity: Activity)
     {
@@ -63,6 +78,7 @@ class FirestoreClass
 
                 // here we receive the document snapshot and we convert it into data model object
                 val user = document.result.toObject(User::class.java)!!
+                this.user = user
                 Log.e("TAG",user.toString())
 
                 /* here MODE_PRIVATE is for default mode means where the created file can only be accessed
@@ -92,9 +108,9 @@ class FirestoreClass
                     is ProfilePreviewActivity ->{
                         activity.userDetailsSuccess(user)
                     }
-//                    is UserDashboardActivity ->{
-//                        activity.userDetailsSuccess(user)
-//                    }
+                    is ChangePasswordActivity ->{
+                        activity.onDetailsGetSuccess(user)
+                    }
                 }
             }
             .addOnFailureListener { e->

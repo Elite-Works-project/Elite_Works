@@ -7,6 +7,7 @@ import android.text.TextUtils
 import android.util.Log
 import android.util.Patterns
 import com.example.eliteworks.databinding.ActivityForgotPasswordBinding
+import com.google.firebase.auth.FirebaseAuth
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -26,6 +27,7 @@ class ForgotPasswordActivity : BaseActivity()
             if(emailIDValidated())
             {
                  //reset password mail will be sent to Email ID
+                //TODO: Reseting password from email [link] doesn't reset in FireStore
                 resetPassword()
             }
         }
@@ -33,28 +35,19 @@ class ForgotPasswordActivity : BaseActivity()
 
     private fun resetPassword() {
         val email = binding.etEmailFromForgotPassword.text.toString()
-        val call = apiService.forgotPassword(email)
-        call.enqueue(object : Callback<ResponseBody>{
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-              if(response.isSuccessful){
-                  val responseBody: ResponseBody? = response.body()
-                  if(responseBody!=null){
-                      Log.e("TAG",responseBody.string())
-                      showErrorSnackBar("Email Sent Successfully",false)
-                      startActivity(Intent(this@ForgotPasswordActivity,LoginActivity::class.java))
-                  }
-              }else{
-                  showErrorSnackBar("Server error - " + response.message(),true)
-              }
-            }
 
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                showErrorSnackBar(t.localizedMessage.toString(),true)
-                Log.e("TAG",t.localizedMessage.toString())
+        FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("TAG", "Email sent.")
+                    showErrorSnackBar("Email Sent Successfully", false)
+                    startActivity(Intent(this@ForgotPasswordActivity, LoginActivity::class.java))
+                } else {
+                    showErrorSnackBar("Password reset failed. " + task.exception?.message, true)
+                }
             }
-
-        })
     }
+
 
     private fun emailIDValidated(): Boolean
     {

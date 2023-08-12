@@ -26,9 +26,9 @@
         <activity
             android:name=".CompleteProfileActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize|stateVisible">
-
-        </activity>
+            android:windowSoftInputMode="adjustResize|stateVisible"></activity>
+        <activity android:name=".ChangePasswordActivity"
+            android:exported="true"/>
         <activity
             android:name=".ForgotPasswordActivity"
             android:exported="false" />

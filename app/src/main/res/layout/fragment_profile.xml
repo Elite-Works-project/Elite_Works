@@ -51,7 +51,7 @@
 
         <LinearLayout
             android:gravity="center"
-            android:id="@+id/btn_edit_profile_fragment"
+            android:id="@+id/ll_edit_profile_fragment"
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -66,6 +66,7 @@
             <Button
                 android:layout_width="0dp"
                 android:layout_weight="1"
+                android:id="@+id/btn_edit_profile_fragment"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
                 android:text="Edit Profile"
@@ -83,7 +84,7 @@
 
         <LinearLayout
             android:gravity="center"
-            android:id="@+id/btn_change_password_profile_fragment"
+            android:id="@+id/ll_change_password_profile_fragment"
             android:layout_marginTop="18dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -98,6 +99,7 @@
             <Button
                 android:layout_width="0dp"
                 android:layout_weight="1"
+                android:id="@+id/btn_change_password_profile_fragment"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
                 android:text="Change Password"
@@ -115,7 +117,7 @@
 
         <LinearLayout
             android:gravity="center"
-            android:id="@+id/btn_address_profile_fragment"
+            android:id="@+id/ll_address_profile_fragment"
             android:layout_marginTop="18dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -130,6 +132,7 @@
             <Button
                 android:layout_width="0dp"
                 android:layout_weight="1"
+                android:id="@+id/btn_address_profile_fragment"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
                 android:text="Address"
@@ -147,7 +150,7 @@
 
         <LinearLayout
             android:gravity="center"
-            android:id="@+id/btn_app_info_profile_fragment"
+            android:id="@+id/ll_app_info_profile_fragment"
             android:layout_marginTop="18dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -162,6 +165,7 @@
             <Button
                 android:layout_width="0dp"
                 android:layout_weight="1"
+                android:id="@+id/btn_app_info_profile_fragment"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
                 android:text="App Information"
@@ -179,8 +183,9 @@
 
         <LinearLayout
             android:gravity="center"
-            android:id="@+id/btn_sign_out_fragment"
+            android:id="@+id/ll_sign_out_fragment"
             android:layout_marginTop="18dp"
+            android:layout_marginBottom="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -194,6 +199,7 @@
             <Button
                 android:layout_width="0dp"
                 android:layout_weight="1"
+                android:id="@+id/btn_sign_out_profile_fragment"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
                 android:text="Sign Out"

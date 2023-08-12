@@ -49,7 +49,19 @@ class HomeFragment : BaseFragment() {
     }
 
     fun userDetailsSuccess(user: User) {
-        binding.nameUserDashboard.text = user.name
-        Glide.with(this).load(user.photo).into(binding.imageUserDashboard)
+        // Check if _binding is not null before accessing views
+        if (_binding != null) {
+            binding.nameUserDashboard.text = user.name
+            if (user.photo.isNotBlank()) {
+                Glide.with(this)
+                    .load(user.photo)
+                    .into(binding.imageUserDashboard)
+            } else {
+                // Load a placeholder image if user.photo is blank
+                Glide.with(this)
+                    .load(R.drawable.man) // Replace with your default image resource
+                    .into(binding.imageUserDashboard)
+            }
+        }
     }
 }

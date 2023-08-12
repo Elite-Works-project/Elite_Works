@@ -1,5 +1,6 @@
 package com.example.eliteworks
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,6 +11,9 @@ import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.example.eliteworks.databinding.FragmentHomeBinding
 import com.example.eliteworks.databinding.FragmentProfileBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 
 private var mUser: User? = null
 class ProfileFragment : Fragment() {
@@ -39,8 +43,16 @@ class ProfileFragment : Fragment() {
         // Display user data if it has been loaded
         mUser?.let { userDetailsSuccess(it) }
 
-        binding.btnSignOutFragment.setOnClickListener{
-            //TODO : Logout
+        binding.btnSignOutProfileFragment.setOnClickListener{
+            FirebaseAuth.getInstance().signOut()
+            val intent = Intent(requireActivity(), LoginActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            startActivity(intent)
+            requireActivity().finish()
+        }
+
+        binding.btnChangePasswordProfileFragment.setOnClickListener {
+            startActivity(Intent(requireActivity(),ChangePasswordActivity::class.java))
         }
 
         return root

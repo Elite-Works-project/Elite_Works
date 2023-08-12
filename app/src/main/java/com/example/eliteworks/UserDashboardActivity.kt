@@ -1,64 +1,78 @@
 package com.example.eliteworks
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toolbar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.eliteworks.BaseActivity
+import com.example.eliteworks.R
 import com.example.eliteworks.databinding.ActivityUserDashboardBinding
-import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationView
-import com.google.firebase.auth.FirebaseAuth
 
-//private var currentFragment:Fragment = HomeFragment()
-class UserDashboardActivity : AppCompatActivity() {
-    private lateinit var binding:ActivityUserDashboardBinding
-    private lateinit var mAuth: FirebaseAuth
+class UserDashboardActivity : BaseActivity() {
+    private lateinit var binding: ActivityUserDashboardBinding
     private lateinit var navController: NavController
+    private lateinit var bottomNavigationView:BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         binding = ActivityUserDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
-//        replaceFragment(currentFragment)
-        mAuth = FirebaseAuth.getInstance()
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_dashboard) as NavHostFragment
+        // Initialize the NavController
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_dashboard) as NavHostFragment
         navController = navHostFragment.navController
-        Log.e("NavController", "onCreate: $navController", )
 
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView_user_dashboard)
-        val layout = findViewById<CollapsingToolbarLayout>(R.id.collapsing_toolbar_layout)
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        // This line gives error
-        val appBarConfiguration = AppBarConfiguration(navController.graph)
-//        setupActionBarWithNavController(navController, appBarConfiguration)
-        layout.setupWithNavController(toolbar,navController,appBarConfiguration)
+        bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView_user_dashboard)
+        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.bottom_nav_bar_home -> {
+                    navController.navigate(R.id.navigation_Home)
+                    true
+                }
+                R.id.bottom_nav_bar_completed -> {
+                    navController.navigate(R.id.navigation_completed)
+                    true
+                }
+                R.id.bottom_nav_bar_leaves -> {
+                    navController.navigate(R.id.navigation_leaves)
+                    true
+                }
+                R.id.bottom_nav_bar_attendance -> {
+                    navController.navigate(R.id.navigation_attendance)
+                    true
+                }
+                R.id.bottom_nav_bar_profile -> {
+                    navController.navigate(R.id.navigation_profile)
+                    true
+                }
+                else -> false
+            }
+        }
 
-
-//        bottomNavigationView.setupWithNavController(navController)
     }
 
     override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment_activity_dashboard)
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
-//    private fun replaceFragment(fragment: Fragment)
-//    {
-//        val fragmentManager = supportFragmentManager
-//        val fragmentTransaction = fragmentManager.beginTransaction()
-//        fragmentTransaction.replace(R.id.frameLayout_user_dashboard,fragment)
-//        fragmentTransaction.commit()
-//    }
+    override fun onBackPressed() {
+        if (navController.currentDestination?.id != R.id.navigation_Home) {
+            navController.popBackStack(R.id.navigation_Home, false)
+            bottomNavigationView.menu.findItem(R.id.bottom_nav_bar_home).isChecked = true
+        } else {
+            doubleBackToExit()
+        }
+    }
+
 
 }
