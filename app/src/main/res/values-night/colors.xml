@@ -31,4 +31,6 @@
     <color name="tasks_card_view_color">#323232</color>
 
     <color name="fragment_home_bg">#4B89DC</color>
+
+    <color name="calendar_half_leave">#d9d92f</color>
 </resources>

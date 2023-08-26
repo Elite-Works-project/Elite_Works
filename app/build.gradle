@@ -36,6 +36,7 @@ android {
         //noinspection DataBindingWithoutKapt
         dataBinding true
     }
+
 }
 
 dependencies {
@@ -90,4 +91,6 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.0'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.0'
 
+    //calendar
+    implementation 'com.prolificinteractive:material-calendarview:1.4.3'
 }

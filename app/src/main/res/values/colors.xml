@@ -33,4 +33,6 @@
 
     <color name="fragment_home_bg">#FFFFFF</color>
 
+    <color name="calendar_half_leave">#ffe919</color>
+    <color name="calendar_leave">#ff5151</color>
 </resources>
