@@ -55,20 +55,3 @@ class AttendanceDecorator(
     }
 }
 
-class DefaultTextColorDecorator(private val context: Context) : DayViewDecorator {
-    override fun shouldDecorate(day: CalendarDay): Boolean {
-        return true
-    }
-
-    override fun decorate(view: DayViewFacade) {
-        val currentNightMode = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        var color = when (currentNightMode) {
-            Configuration.UI_MODE_NIGHT_YES -> Color.WHITE
-            Configuration.UI_MODE_NIGHT_NO -> Color.BLACK
-            else -> Color.BLACK
-        }
-
-        view.addSpan(ForegroundColorSpan(color))
-    }
-}
-

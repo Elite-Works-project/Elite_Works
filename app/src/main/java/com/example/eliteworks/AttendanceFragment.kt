@@ -1,17 +1,21 @@
 package com.example.eliteworks
 
 import AttendanceDecorator
-import DefaultTextColorDecorator
+
 import android.os.Bundle
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+
+
 import androidx.fragment.app.Fragment
 import com.example.eliteworks.databinding.FragmentAttendanceBinding
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 
 
-class AttendanceFragment : Fragment() {
+
+class AttendanceFragment : BaseFragment() {
     private var _binding: FragmentAttendanceBinding? = null
     private val binding get() = _binding!!
 
@@ -23,8 +27,7 @@ class AttendanceFragment : Fragment() {
 
         // Initialize MaterialCalendarView from the binding
         val calendarView: MaterialCalendarView = binding.calendarView
-
-
+        
 
         // Dummy attendance data
         val attendanceData = mapOf(
@@ -38,15 +41,8 @@ class AttendanceFragment : Fragment() {
         val absentDecorator = AttendanceDecorator("absent",R.color.calendar_leave, attendanceData,requireContext())
         val halfLeaveDecorator = AttendanceDecorator("half-leave", R.color.calendar_half_leave, attendanceData,requireContext())
 
-//        val initialMonth = calendarView.currentDate.month
-//        val initialYear = calendarView.currentDate.year
-//        calendarView.addDecorator(DefaultTextColorDecorator(requireContext()))
         calendarView.addDecorators(absentDecorator, halfLeaveDecorator)
 
-//        calendarView.setOnMonthChangedListener{_,date ->
-//
-//            calendarView.addDecorator(DefaultTextColorDecorator(requireContext()))
-//        }
         return binding.root
     }
 

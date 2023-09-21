@@ -46,6 +46,8 @@ open class BaseFragment : Fragment() {
 
     fun hideProgressDialog()
     {
-        mProgressDialog.dismiss()
+        if (::mProgressDialog.isInitialized && mProgressDialog.isShowing) {
+            mProgressDialog.dismiss()
+        }
     }
 }

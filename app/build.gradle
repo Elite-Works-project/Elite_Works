@@ -36,6 +36,7 @@ android {
         //noinspection DataBindingWithoutKapt
         dataBinding true
     }
+    namespace 'com.example.eliteworks'
 
 }
 
